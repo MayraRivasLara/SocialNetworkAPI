@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const { validateEmail } = require('../utils/validator');
+const { validateEmail } = require("../utils/validator");
 
 // Schema to create User model
 const userSchema = new Schema(
@@ -18,23 +18,22 @@ const userSchema = new Schema(
     },
 
     thoughts: [
-        {
-      type: Schema.Types.ObjectId,
-      ref: "Thought",
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Thought",
       },
     ],
 
     friends: [
-        {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
       },
     ],
-
-    assignments: [assignmentSchema],
+  
   },
   {
-    timestamps: true,  
+    timestamps: true,
     id: true,
   }
 );
