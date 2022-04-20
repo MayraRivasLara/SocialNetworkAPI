@@ -1,6 +1,6 @@
 const { faker } = require("@faker-js/faker");
 const Thought = require("../models/Thought");
-const User = require("../models/User");
+const User = require('../models/User');
 const getRandomModel = require("./helper-seed");
 
 async function seedThought(numbers) {
@@ -15,7 +15,7 @@ async function seedThought(numbers) {
       thought_text: faker.lorem.sentence(10),
       reactions: [
         {
-          body: faker.lorem.sentence(3),
+          body: faker.lorem.sentence(5),
           user_id: randomUser._id,
         },
       ],

@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index",
+    "start": "node server",
+    "dev": "nodemon server",
     "seed": "node seeds/index.js",
-    "heroku-postbuild": "node utils/seed.js"
+    "heroku-postbuild": "node seeds/index.js"
   },
   "dependencies": {
     "express": "^4.17.3",

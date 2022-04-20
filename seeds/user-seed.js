@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const { faker } = require("@faker-js/faker");
+const getRandomModel = require("./helper-seed");
 
 async function seedUser(numbers) {
   await User.deleteMany();
@@ -11,12 +12,17 @@ async function seedUser(numbers) {
       faker.name.firstName(),
       faker.name.lastName(),
     ];
+    const randomUser = await getRandomModel(User);
+    const friends = [];
+
+    if (randomUser){
+        friends.push(randomUser);
+    }
 
     const created = await User.create({
       username: faker.internet.userName(firstName, lastName),
       email: faker.internet.email(firstName, lastName),
-      // thoughts:
-      // friends:
+      friends
     });
 
     users.push(created);
