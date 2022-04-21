@@ -1,11 +1,12 @@
 {
   "scripts": {
     "start": "node server",
-    "dev": "nodemon server",
+    "watch": "nodemon server",
     "seed": "node seeds/index.js",
     "heroku-postbuild": "node seeds/index.js"
   },
   "dependencies": {
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "mongoose": "^6.3.0"
   },

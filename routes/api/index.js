@@ -1,4 +1,7 @@
 const router = require("express").Router();
+require('dotenv').config();
+
+//Importing User and Thought routes
 const userRoutes = require("./user-routes");
 const thoughtRoutes = require("./thought-routes");
 
