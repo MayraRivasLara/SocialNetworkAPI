@@ -38,46 +38,68 @@ router.post("/", async (req, res) => {
 
     res.status(200).json(addToUser);
   } catch (err) {
-        console.log(err);
-        res.status(500).json(err);
+    console.log(err);
+    res.status(500).json(err);
   }
 });
 
 // PUT to update a thought by its _id
 router.put("/:id", async (req, res) => {
-    try{
-        const updateThought = await Thought.findByIdAndUpdate(
-            {
-                _id: req.params.id,
-            },
-            req.body,
-            { new: true },
-
-        ).select("-__v");
-        res.status(200).json(updateThought);
-    } catch (err) {
-        res.status(500).json(err);
-    }
+  try {
+    const updateThought = await Thought.findByIdAndUpdate(
+      {
+        _id: req.params.id,
+      },
+      req.body,
+      { new: true }
+    ).select("-__v");
+    res.status(200).json(updateThought);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 // DELETE to remove a thought by its _id
-router.delete("/:_id",async (req, res) => {
-    try {
-        const deleteOneThought = await Thought.findOneAndDelete({
-            _id: req.params._id,
-        });
-        deleteOneThought;
-        res.status(200).send("This thought has been deleted");
-       
-    } catch (err) {
-        res.status(500).json(err);
-    }
+router.delete("/:_id", async (req, res) => {
+  try {
+    const deleteOneThought = await Thought.findOneAndDelete({
+      _id: req.params._id,
+    });
+    deleteOneThought;
+    res.status(200).send("This thought has been deleted");
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
-
 
 // /api/thoughts/:thoughtId/reactions
 // POST to create a reaction stored in a single thought's reactions array field
+router.post("/:thoughtId/reactions", async (req, res) => {
+  try {
+    const createReaction = await Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $addToSet: { reactions: req.body } },
+      { new: true }
+    );
+    createReaction;
+    res.status(200).send("reaction added!");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // DELETE to pull and remove a reaction by the reaction's reactionId value
-
+router.delete("/:thoughtId/reactions", async (req, res) => {
+  try {
+    const deleteReaction = await Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: req.body } },
+      { new: true }
+    );
+    deleteReaction;
+    res.status(200).send("reaction deleted!");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 module.exports = router;

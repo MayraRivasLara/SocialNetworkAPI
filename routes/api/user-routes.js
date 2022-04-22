@@ -53,7 +53,7 @@ router.put("/:id", async (req, res) => {
   
 });
 
-// Todo: DELETE to remove user by its _id
+// DELETE to remove user by its _id
 // BONUS: Remove a user's associated thoughts when deleted.
 router.delete("/:_id", async (req, res) => {
   try {
@@ -76,12 +76,37 @@ router.delete("/:_id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 // /api/users/:userId/friends/:friendId
 // POST to add a new friend to a user's friend list
+router.post("/api/user/:userId/friends/:friendId", async (req, res)=> {
+  try {
+    const addFriend = await User.findOneAndUpdate(
+      
+      { _id: req.params._id},
+      {$push: { friends: req.params.friendId } },
+      { new: true }
+    ).select("-__v");
 
-
-
+    res.status(200).json(addFriend);
+  } catch (err) { 
+    res.status(500).json(err);
+  }
+});
 
 // DELETE to remove a friend from a user's friend list
+router.delete("/:userId/friends/:friendId", async (req, res) => {
+  try {
+    const deleteFriend = await User.deleteOne(
+      { _id: req.params.id },
+      { $pull: { friends: req.params.friendId } },
+      { new: true },
+
+    ).select("-__v");
+    res.status(200).json(deleteFriend);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 module.exports = router;
