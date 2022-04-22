@@ -55,23 +55,23 @@ router.put("/:id", async (req, res) => {
 
 // Todo: DELETE to remove user by its _id
 // BONUS: Remove a user's associated thoughts when deleted.
-router.delete("/:id", async (req, res) => {
+router.delete("/:_id", async (req, res) => {
   try {
     const findThoughts = await User.findOne({ _id: req.params._id });
     if (findThoughts.thoughts.length !== 0) {
       const usersThoughts = findThoughts.thoughts;
       usersThoughts.forEach(async (element) => {
-        const deleteThoughts = await Thought.findOneAndDelete({
+        const deleteThoughts = await Thought.deleteOne({
           _id: element._id,
         });
         deleteThoughts;
       });
     }
-    const deleteUser = await User.findOneAndDelete({
+    const deleteUser = await User.deleteOne({
       _id: req.params._id,
     });
     deleteUser;
-    res.status(200).send("user and their thoughts successfully deleted");
+    res.status(200).send("user & thoughts have been deleted");
   } catch (err) {
     res.status(500).json(err);
   }

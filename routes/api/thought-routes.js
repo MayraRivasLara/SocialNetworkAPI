@@ -61,6 +61,19 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE to remove a thought by its _id
+router.delete("/:_id",async (req, res) => {
+    try {
+        const deleteOneThought = await Thought.findOneAndDelete({
+            _id: req.params._id,
+        });
+        deleteOneThought;
+        res.status(200).send("This thought has been deleted");
+       
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 
 // /api/thoughts/:thoughtId/reactions
 // POST to create a reaction stored in a single thought's reactions array field
