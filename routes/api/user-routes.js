@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// PUT to update a user by its _id 
+// PUT to update a user by its _id
 router.put("/:id", async (req, res) => {
   try {
     const updateUser = await User.findByIdAndUpdate(
@@ -43,14 +43,12 @@ router.put("/:id", async (req, res) => {
         _id: req.params.id,
       },
       req.body,
-      { new: true },
-
+      { new: true }
     ).select("-__v");
     res.status(200).json(updateUser);
   } catch (err) {
-      res.status(500).json(err);
+    res.status(500).json(err);
   }
-  
 });
 
 // DELETE to remove user by its _id
@@ -79,17 +77,16 @@ router.delete("/:_id", async (req, res) => {
 
 // /api/users/:userId/friends/:friendId
 // POST to add a new friend to a user's friend list
-router.post("/api/user/:userId/friends/:friendId", async (req, res)=> {
+router.post("/api/user/:userId/friends/:friendId", async (req, res) => {
   try {
     const addFriend = await User.findOneAndUpdate(
-      
-      { _id: req.params._id},
-      {$push: { friends: req.params.friendId } },
+      { _id: req.params._id },
+      { $push: { friends: req.params.friendId } },
       { new: true }
     ).select("-__v");
 
     res.status(200).json(addFriend);
-  } catch (err) { 
+  } catch (err) {
     res.status(500).json(err);
   }
 });
@@ -100,8 +97,7 @@ router.delete("/:userId/friends/:friendId", async (req, res) => {
     const deleteFriend = await User.deleteOne(
       { _id: req.params.id },
       { $pull: { friends: req.params.friendId } },
-      { new: true },
-
+      { new: true }
     ).select("-__v");
     res.status(200).json(deleteFriend);
   } catch (err) {
