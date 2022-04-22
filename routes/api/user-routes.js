@@ -1,82 +1,86 @@
 const router = require("express").Router();
 const { User, Thought } = require("../../models");
 
-// `/api/users` end point 
-// GET all users
-
-router.get('/', (req, res) => {
-    // find all users
-  
-    User.findAll({
-      // be sure to include user thoughts.
-      include: [
-        {model: Thought}
-      ]
-  
-    }).then((users) => {
-      res.json(users);
-    })
-  
+// GET all users /api/user
+router.get("/", async (req, res) => {
+  await User.find({
+    // be sure to include user thoughts.
+    include: [{ model: Thought }],
+  }).then((getAllUsers) => {
+    res.json(getAllUsers);
   });
-
-
+});
 
 // GET a single user by its _id and populated thought and friend data
-router.get('/:id', (req, res) => {
-        
-    User.findByPk(req.params.id, {
-      include: [
-        {model: Thought}
-      ]
+router.get("/:_id", async (req, res) => {
+  try {
+    const getUserById = await User.findById({
+      _id: req.params._id,
+      include: [{ model: User }, { model: Thought }],
+    });
+    res.status(200).json(getUserById);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// POST to create a new user: example data --- {  "username": "lernantino"  "email": "lernantino@gmail.com" }
+router.post("/", async (req, res) => {
+  try {
+    const createNewUser = await User.create(req.body);
+    createNewUser;
+    res.status(200).json(createNewUser);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// PUT to update a user by its _id 
+router.put("/:id", async (req, res) => {
+  try {
+    const updateUser = await User.findByIdAndUpdate(
+      {
+        _id: req.params.id,
+      },
+      req.body,
+      { new: true },
+
+    ).select("-__v");
+    res.status(200).json(updateUser);
+  } catch (err) {
+      res.status(500).json(err);
+  }
   
-    }).then((user) => res.json (user))
-    
-  });
+});
 
-
-// POST a new user: example data --- {  "username": "lernantino"  "email": "lernantino@gmail.com" }
-router.post('/', (req, res) => {
-  
-    User.create({
-      username: req.body.username,
-      email: req.body.email,
-    }).then((newUser) => {
-      res.json(newUser);
-    })
-  });
-  
-
-// PUT to update a user by its _id
-router.put('/:id', (req, res) => {
-    
-    User.updateOne({
-      username: req.body.username
-    }, {
-      where: {
-        _id:req.params._id
-      }
-    }).then((updated) => {
-      res.json(updated);
-    })
-  });
-
-// DELETE to remove user by its _id
-router.delete('/:id', (req, res) => {
-   
-    User.destroy({
-      where: {
-        _id: req.params._id,
-      }
-    }).then((deleted) => {
-      res.json(deleted);
-    })
-  });
-  
-
-// BONUS: Remove a user's associated thoughts when deleted. 
+// Todo: DELETE to remove user by its _id
+// BONUS: Remove a user's associated thoughts when deleted.
+router.delete("/:id", async (req, res) => {
+  try {
+    const findThoughts = await User.findOne({ _id: req.params._id });
+    if (findThoughts.thoughts.length !== 0) {
+      const usersThoughts = findThoughts.thoughts;
+      usersThoughts.forEach(async (element) => {
+        const deleteThoughts = await Thought.findOneAndDelete({
+          _id: element._id,
+        });
+        deleteThoughts;
+      });
+    }
+    const deleteUser = await User.findOneAndDelete({
+      _id: req.params._id,
+    });
+    deleteUser;
+    res.status(200).send("user and their thoughts successfully deleted");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 // /api/users/:userId/friends/:friendId
-
 // POST to add a new friend to a user's friend list
+
+
+
 
 // DELETE to remove a friend from a user's friend list
 
