@@ -81,7 +81,7 @@ router.post("/api/user/:userId/friends/:friendId", async (req, res) => {
   try {
     const addFriend = await User.findOneAndUpdate(
       { _id: req.params._id },
-      { $push: { friends: req.params.friendId } },
+      { $addToSet: { friends: req.params.friendId } },
       { new: true }
     ).select("-__v");
 
