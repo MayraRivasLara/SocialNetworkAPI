@@ -69,7 +69,9 @@ router.delete("/:_id", async (req, res) => {
       _id: req.params._id,
     });
     deleteUser;
-    res.status(200).send("user & thoughts have been deleted");
+    res.status(200).json({
+      data: "deleted"
+    });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -77,14 +79,14 @@ router.delete("/:_id", async (req, res) => {
 
 // /api/users/:userId/friends/:friendId
 // POST to add a new friend to a user's friend list
-router.post("/api/user/:userId/friends/:friendId", async (req, res) => {
+router.post("/:userId/friends/:friendId", async (req, res) => {
   try {
     const addFriend = await User.findOneAndUpdate(
-      { _id: req.params._id },
+      { _id: req.params.userId },
       { $addToSet: { friends: req.params.friendId } },
       { new: true }
-    ).select("-__v");
-
+    )
+      console.log('add friend', addFriend);
     res.status(200).json(addFriend);
   } catch (err) {
     res.status(500).json(err);
@@ -94,8 +96,8 @@ router.post("/api/user/:userId/friends/:friendId", async (req, res) => {
 // DELETE to remove a friend from a user's friend list
 router.delete("/:userId/friends/:friendId", async (req, res) => {
   try {
-    const deleteFriend = await User.deleteOne(
-      { _id: req.params.id },
+    const deleteFriend = await User.findOneAndUpdate(
+      { _id: req.params.userId },
       { $pull: { friends: req.params.friendId } },
       { new: true }
     ).select("-__v");

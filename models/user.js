@@ -38,13 +38,10 @@ const userSchema = new Schema(
   },
   {
     timestamps: true,
-    id: false,
+    id: true,
   }
 );
 
-userSchema.virtual("friendCount").get(function () {
-  return this.friends.length;
-});
 
 const User = model("User", userSchema);
 
