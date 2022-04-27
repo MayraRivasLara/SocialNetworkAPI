@@ -31,6 +31,16 @@ For installation, follow the easy steps bellow:
 
 ## Walk-through Video
 
+![SocialNetworkAPI](https://user-images.githubusercontent.com/94599271/165471023-711c118f-f989-456d-bb22-06d8167ba571.png)
+
+Video1: UserEndPoints
+
+https://drive.google.com/file/d/12MUSKxtoywGgZ-60S1i3AHgzz0FQXrRi/view
+
+Video2: ThoughtEndPoints
+
+https://drive.google.com/file/d/1UdJIXuTPgdtLAQM0iXSQqF85dABIMmRO/view
+
 ## License
 
 ![License](https://img.shields.io/badge/License-MIT-orange)
