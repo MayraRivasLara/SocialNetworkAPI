@@ -7,7 +7,6 @@ This is an API for a social media network that uses a NoSQL database to enable t
 
 ## Table of Contents (Optional)
 
-If your README is long, add a table of contents to make it easy for users to find what they need.
 
   - [Description](#description)
   - [Table of Contents (Optional)](#table-of-contents-optional)
